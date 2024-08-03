@@ -1,4 +1,6 @@
 import './header.css';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 function Header() {
     return (
@@ -6,9 +8,9 @@ function Header() {
             <h1 className="bannerName">TrashDivers</h1>
             <div>
                 <ul className="links">
-                    <li><a>Home</a></li>
+                    <li><Link to="/">Home</Link></li>
                     <li><a>Map</a></li>
-                    <li><a>Login/Signup</a></li>
+                    <li><Link to="/login">Login/Signup</Link></li>
                 </ul>
             </div>
         </div>
