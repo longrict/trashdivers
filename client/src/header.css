@@ -1,0 +1,16 @@
+.banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background-color: #0B6E4F;
+    color: #FCFBF4;
+    padding: 0px 32px;
+}
+
+.links {
+    list-style-type: none;
+    display: flex;
+    gap: 32px;
+    
+}
