@@ -19,14 +19,12 @@ function Login(){
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log("SUBMITTED");
-        const validationErrors = Validation(values);
-        setErrors(validationErrors);
-
-        if (Object.keys(validationErrors).length === 0) {
+        setErrors(Validation(values));
+        if (errors.username === "" && errors.password === "") {
             axios.post('http://localhost:8081/login', values)
                 .then(res => {
                     if (res.data === "Success") {
-                        navigate('/home');
+                        navigate('/map');
                     } else {
                         alert("Invalid credentials");
                     }

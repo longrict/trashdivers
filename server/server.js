@@ -1,5 +1,4 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const cors = require('cors');
 require('dotenv').config(); 
@@ -9,7 +8,7 @@ const port = 8081;
 const app = express();
 
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
 
 const db = mysql.createConnection({
     host: process.env.DB_HOST,
@@ -30,7 +29,7 @@ app.post('/login', (req,res) =>{
     const { username, password } = req.body;
     console.log('Request body:', req.body);
 
-    const query ="SELECT * FROM login WHERE username = ? AND password = ?";
+    const query =`SELECT * FROM login WHERE username = ? AND password = ?`;
 
     db.query(query, [username, password], (err, results) =>{
         if (err) {
