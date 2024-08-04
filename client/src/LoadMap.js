@@ -78,19 +78,22 @@ const PoiMarkers = props => {
 
 function LoadMap() {
   const [locations, setLocations] = useState([])
-    
-  axios.post('http://localhost:8081/get-locations', {}).then(response =>{
-    response.data.map((position)=>{
-      setLocations([...locations, 
-      { 
-        key: position.lat.toString(),
-        location: { lat: position.lat, lng: position.lng }
-      }])
-	console.log("lat: ")
-    })
-  }).catch(error =>{
-    console.error('Error fetching locations:', error);
-  });
+
+    useEffect(() => {
+      axios.post('http://localhost:8081/get-locations', {})
+        .then(response => {
+          const newLocations = response.data.map(position => ({
+            key: position.id,
+            location: { lat: position.lat, lng: position.lng }
+          }));
+          setLocations(newLocations);
+        })
+        .catch(error => {
+          console.error('Error fetching locations:', error);
+        });
+    }, []);
+ 
+
   const onMapClick = (ev) => {
     const latLng = ev.detail.latLng
     const existingLocation = locations.find((location) => location.key === latLng.lat.toString())
@@ -104,14 +107,6 @@ function LoadMap() {
   }
     // const lat = ev.detail.latLng.lat;
     // const lng = ev.detail.latLng.lng;
-    setLocations([...locations, 
-      { 
-      key: ev.detail.latLng.lat.toString(),
-      location: ev.detail.latLng
-    }])
-
-  };
-
   
   return (
     <div style={{height:"90vh"}}>
@@ -122,14 +117,14 @@ function LoadMap() {
         <Map
           defaultZoom={13}
           defaultCenter={{ lat: -33.860664, lng: 151.208138 }}
-          onCameraChanged= {ev =>
-            console.log(
-              "camera changed:",
-              ev.detail.center,
-              "zoom:",
-              ev.detail.zoom
-            )
-          }
+          // onCameraChanged= {ev =>
+          //   console.log(
+          //     "camera changed:",
+          //     ev.detail.center,
+          //     "zoom:",
+          //     ev.detail.zoom
+          //   )
+          // }
           mapId="da37f3254c6a6d1c"
           onClick={onMapClick}
         >
