@@ -49,6 +49,21 @@ app.post('/login', (req,res) =>{
 
 });
 
+app.post('/get-locations',(req,res) => {
+    const query = "SELECT * FROM location";
+    db.query(query, (err,results) => {
+        if (err) {
+            console.error('Error fetching data from the database:', err);
+            res.status(500).send('Server error');
+            return;
+        } else {
+            console.log("Locations fetched successfully");
+            res.status(200).send(results);
+            return;
+        }
+    })
+})
+
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
 });

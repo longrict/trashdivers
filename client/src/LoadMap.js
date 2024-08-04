@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {APIProvider,Map,useMap, AdvancedMarker,Pin} from "@vis.gl/react-google-maps";
 import MarkerModal from './components/marker_modal/marker_modal.js';
+import axios from 'axios';
 
 const PoiMarkers = props => {
   const map = useMap()
@@ -66,7 +67,19 @@ const PoiMarkers = props => {
 
 function LoadMap() {
   const [locations, setLocations] = useState([])
-
+    
+  axios.post('http://localhost:8081/get-locations', {}).then(response =>{
+    response.data.map((position)=>{
+      setLocations([...locations, 
+      { 
+        key: position.lat.toString(),
+        location: { lat: position.lat, lng: position.lng }
+      }])
+	console.log("lat: ")
+    })
+  }).catch(error =>{
+    console.error('Error fetching locations:', error);
+  });
   const onMapClick = (ev) => {
     const latLng = ev.detail.latLng
     const existingLocation = locations.find((location) => location.key === latLng.lat.toString())
