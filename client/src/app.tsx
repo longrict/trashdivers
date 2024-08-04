@@ -30,6 +30,14 @@ import { MarkerClusterer } from "@googlemaps/markerclusterer"
 const App = () => {
   const [locations, setLocations] = useState([])
 
+  const onMapClick = (ev) => {
+    setLocations([...locations, 
+      { 
+      key: ev.detail.latLng.lat.toString(),
+      location: ev.detail.latLng
+    }])
+  }
+  
   return (
     <APIProvider
       apiKey={import.meta.env.VITE_REACT_APP_SECRET_NAME}
@@ -47,15 +55,7 @@ const App = () => {
           )
         }
         mapId="da37f3254c6a6d1c"
-        onClick= { ev => {
-          if (ev.detail.latLng) {
-            const poi = { 
-              key: ev.detail.latLng.lat.toString(),
-              location: ev.detail.latLng
-            }
-            setLocations([...locations, poi])
-          }
-        }}
+        onClick={onMapClick}
       >
         <PoiMarkers pois={locations} />
       </Map>
@@ -66,7 +66,6 @@ const App = () => {
 const PoiMarkers = props => {
   const map = useMap()
   const [markers, setMarkers] = useState({})
-  const clusterer = useRef(null)
 
   const handleClick = useCallback(ev => {
     if (!map) return
@@ -75,35 +74,6 @@ const PoiMarkers = props => {
     //console.log('marker clicked: ', ev.latLng.toString());
     map.panTo(ev.latLng)
   })
-
-  // Initialize MarkerClusterer, if the map has changed
-  useEffect(() => {
-    if (!map) return
-    if (!clusterer.current) {
-      clusterer.current = new MarkerClusterer({ map })
-    }
-  }, [map])
-
-  // Update markers, if the markers array has changed
-  useEffect(() => {
-    clusterer.current?.clearMarkers()
-    clusterer.current?.addMarkers(Object.values(markers))
-  }, [markers])
-
-  const setMarkerRef = (marker, key) => {
-    if (marker && markers[key]) return
-    if (!marker && !markers[key]) return
-
-    setMarkers(prev => {
-      if (marker) {
-        return { ...prev, [key]: marker }
-      } else {
-        const newMarkers = { ...prev }
-        delete newMarkers[key]
-        return newMarkers
-      }
-    })
-  }
 
   console.log(props)
   console.log(props.pois)
@@ -114,8 +84,6 @@ const PoiMarkers = props => {
         <AdvancedMarker
           key={poi.key}
           position={poi.location}
-          ref={marker => setMarkerRef(marker, poi.key)}
-          clickable={true}
           onClick={handleClick}
         >
           <Pin
