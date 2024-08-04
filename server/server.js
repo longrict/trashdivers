@@ -49,6 +49,35 @@ app.post('/login', (req,res) =>{
 
 });
 
+app.post('/get-locations',(req,res) => {
+    const query = "SELECT * FROM location";
+    db.query(query, (err,results) => {
+        if (err) {
+            console.error('Error fetching data from the database:', err);
+            res.status(500).send('Server error');
+            return;
+        } else {
+            console.log("Locations fetched successfully");
+            res.status(200).send(results);
+            return;
+        }
+    });
+});
+
+app.post('/save-location', (req, res) => {
+    const { lat, lng } = req.body;
+  
+    const query = "INSERT INTO location (lat, lng) VALUES (?, ?)";
+    db.query(query, [lat, lng], (err, results) => {
+      if (err) {
+        console.error('Error inserting data into the database:', err);
+        res.status(500).send('Server error');
+        return;
+      }
+      res.status(200).send('Location saved successfully');
+    });
+  });
+
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
 });
