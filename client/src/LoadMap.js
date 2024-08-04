@@ -26,7 +26,7 @@ const PoiMarkers = props => {
   const handleClick = useCallback(ev => {
     if (!map) return
     if (!ev.latLng) return
-
+    if (markerFormData) console.log(markerFormData)
     //console.log('marker clicked: ', ev.latLng.toString());
     handleOpenMarkerModal()
     map.panTo(ev.latLng)
@@ -68,11 +68,15 @@ function LoadMap() {
   const [locations, setLocations] = useState([])
 
   const onMapClick = (ev) => {
-    setLocations([...locations, 
+    const latLng = ev.detail.latLng
+    const existingLocation = locations.find((location) => location.key === latLng.lat.toString())
+    if (!existingLocation) {
+      setLocations([...locations, 
       { 
-      key: ev.detail.latLng.lat.toString(),
-      location: ev.detail.latLng
-    }])
+        key: latLng.lat.toString(),
+        location: latLng
+      }])
+    }
   }
   
   return (
