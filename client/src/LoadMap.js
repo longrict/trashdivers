@@ -78,8 +78,30 @@ const PoiMarkers = props => {
 
 function LoadMap() {
   const [locations, setLocations] = useState([])
-
+    
+  axios.post('http://localhost:8081/get-locations', {}).then(response =>{
+    response.data.map((position)=>{
+      setLocations([...locations, 
+      { 
+        key: position.lat.toString(),
+        location: { lat: position.lat, lng: position.lng }
+      }])
+	console.log("lat: ")
+    })
+  }).catch(error =>{
+    console.error('Error fetching locations:', error);
+  });
   const onMapClick = (ev) => {
+    const latLng = ev.detail.latLng
+    const existingLocation = locations.find((location) => location.key === latLng.lat.toString())
+    if (!existingLocation) {
+      setLocations([...locations, 
+      { 
+        key: latLng.lat.toString(),
+        location: latLng
+      }])
+    }
+  }
     // const lat = ev.detail.latLng.lat;
     // const lng = ev.detail.latLng.lng;
     setLocations([...locations, 
@@ -89,6 +111,7 @@ function LoadMap() {
     }])
 
   };
+
   
   return (
     <div style={{height:"90vh"}}>

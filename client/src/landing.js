@@ -1,4 +1,5 @@
 import './landing.css';
+import { Link } from 'react-router-dom';
 
 function Landing(props) {
 
@@ -37,11 +38,11 @@ function Landing(props) {
                     <div>
                         <div className="text">
                             <h1 className="add-shadow" style={{fontSize:'50px'}}>{"Your pals are cleaning. Why aren't you?"}</h1>
-                            <p className="add-shadow">
+                            <p className="add-shadow" style={{fontSize:'20px'}}>
                                 {"Earth's last line of offense against litter.\nEnlist in the TrashDivers initiative and join the fight for a cleaner environment across the world."}
                             </p>
-                        </div>       
-                        <button id="join-button">Join now</button>  
+                        </div> 
+                        <Link to="/login"><button id="join-button">Join now</button>  </Link>     
                     </div>   
                     <video width="600" autoPlay muted loop id="vid">
                         <source src="/images/vecteezy_plastic-trash-littering-the-ocean-shore-concept-of-ocean_21199882.mp4" type="video/mp4"></source>
