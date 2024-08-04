@@ -6,6 +6,7 @@ import {
   useMapsLibrary,
   useMap,
 } from "@vis.gl/react-google-maps";
+import axios from 'axios';
 const API_KEY =window.GOOGLE_MAPS_API_KEY ?? (process.env.REACT_APP_GOOGLE_MAP_API_KEY);
 
 const Heatmap = ({ data }) => {
@@ -36,23 +37,6 @@ const Heatmap = ({ data }) => {
     return null;
   };
         
-const heatmapData = [
-    { lat: 37.782, lng: -122.447 },
-    { lat: 37.782, lng: -122.445 },
-    { lat: 37.782, lng: -122.443 },
-    { lat: 37.782, lng: -122.441 },
-    { lat: 37.782, lng: -122.439 },
-    { lat: 37.782, lng: -122.437 },
-    { lat: 37.782, lng: -122.435 },
-    { lat: 37.785, lng: -122.447 },
-    { lat: 37.785, lng: -122.445 },
-    { lat: 37.785, lng: -122.443 },
-    { lat: 37.785, lng: -122.441 },
-    { lat: 37.785, lng: -122.439 },
-    { lat: 37.785, lng: -122.437 },
-    { lat: 37.785, lng: -122.435 }
-];
-
 const mapContainerStyle = {
 height: "90vh",
 width: "100%"
@@ -66,35 +50,17 @@ lng: -122.433523
 function Heated() {
     const [points, setPoints] = useState([]);
     useEffect(() => {
-        fetch(
-        "https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/sf-bike-parking.json"
-        )
-        .then((res) => res.json())
-        .then((data) => {
-            setPoints(data.map(({ COORDINATES: [lng, lat] }) => ({ lat, lng })));
+      axios.post('http://localhost:8081/get-locations', {})
+        .then(response => {
+          setPoints(response.data.map(({ lat, lng }) => ({ lat, lng })));
+        })
+        .catch(error => {
+          console.error('Error fetching locations:', error);
         });
     }, []);
+    
     return (
-    // <div style={{ height: "90vh" }}>
-    //   <LoadScript
-    //     googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAP_API_KEY}
-    //     libraries={['visualization']}
-    //   >
-    //     <GoogleMap
-    //       mapContainerStyle={mapContainerStyle}
-    //       center={center}
-    //       zoom={13}
-    //       onLoad={map => setMap(map)}
-    //       mapTypeId="satellite"
-    //     >
-    //       {map && (
-    //         <HeatmapLayer
-    //           data={heatmapData.map(point => new window.google.maps.LatLng(point.lat, point.lng))}
-    //         />
-    //       )}
-    //     </GoogleMap>
-    //   </LoadScript>
-    // </div>
+
     <div style={{ height: "90vh" }}>
         <APIProvider
             apiKey={API_KEY}
