@@ -1,26 +1,26 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {APIProvider,Map,useMap, AdvancedMarker,Pin} from "@vis.gl/react-google-maps";
-import NewsletterModal from './test_modal/test.js';
+import MarkerModal from './components/marker_modal/marker_modal.js';
 
 const PoiMarkers = props => {
   const map = useMap()
   const [markers, setMarkers] = useState({})
 
-  const [isNewsletterModalOpen, setNewsletterModalOpen] = useState(false);
-  const [newsletterFormData, setNewsletterFormData] = useState(null);
+  const [isMarkerModalOpen, setMarkerModalOpen] = useState(false);
+  const [markerFormData, setMarkerFormData] = useState(null);
 
-  const handleOpenNewsletterModal = () => {
-      console.log("test");
-    setNewsletterModalOpen(true);
+  const handleOpenMarkerModal = () => {
+    setMarkerModalOpen(true);
   };
 
-  const handleCloseNewsletterModal = () => {
-    setNewsletterModalOpen(false);
+  const handleCloseMarkerModal = () => {
+    setMarkerModalOpen(false);
   };
 
   const handleFormSubmit = (data) => {
-    setNewsletterFormData(data);
-    handleCloseNewsletterModal();
+    setMarkerFormData(data);
+    console.log(markerFormData);
+    handleCloseMarkerModal();
   };
     
   const handleClick = useCallback(ev => {
@@ -28,7 +28,7 @@ const PoiMarkers = props => {
     if (!ev.latLng) return
 
     //console.log('marker clicked: ', ev.latLng.toString());
-    handleOpenNewsletterModal()
+    handleOpenMarkerModal()
     map.panTo(ev.latLng)
   })
 
@@ -47,17 +47,17 @@ const PoiMarkers = props => {
 	<img src="/images/trash-can-svgrepo-com.svg" width={32} height={32}/>
         </AdvancedMarker>
       ))}
-	{newsletterFormData && newsletterFormData.email && (
+	{markerFormData && markerFormData.notes && (
         <div className="msg-box">
-          <b>{newsletterFormData.email}</b> requested a{' '}
-          <b>{newsletterFormData.digestType}</b> newsletter.
+          <b>{markerFormData.notes}</b> requested a{' '}
+          <b>{markerFormData.garbageType}</b> newsletter.
         </div>
       )}
 
-      <NewsletterModal
-        isOpen={isNewsletterModalOpen}
+      <MarkerModal
+        isOpen={isMarkerModalOpen}
         onSubmit={handleFormSubmit}
-        onClose={handleCloseNewsletterModal}
+        onClose={handleCloseMarkerModal}
       />
     </>
   )
@@ -78,7 +78,6 @@ function LoadMap() {
   return (
     <div style={{height:"90vh"}}>
       <APIProvider
-      
         apiKey= {process.env.REACT_APP_GOOGLE_MAP_API_KEY}
         onLoad={() => console.log("Maps API has loaded.")}
       >
@@ -99,10 +98,8 @@ function LoadMap() {
           <PoiMarkers pois={locations} />
         </Map>
       </APIProvider>
-
     </div>
   )
 }
 
 export {LoadMap};
-
