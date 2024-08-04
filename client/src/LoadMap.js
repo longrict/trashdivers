@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import {APIProvider,Map,useMap, AdvancedMarker,Pin} from "@vis.gl/react-google-maps"
-;
+import {APIProvider,Map,useMap, AdvancedMarker,Pin} from "@vis.gl/react-google-maps";
+import {NewsletterModal} from './test_modal/test.js';
+// import logo from './assets/kerosene.png';
 const PoiMarkers = props => {
   const map = useMap()
   const [markers, setMarkers] = useState({})
@@ -23,12 +24,9 @@ const PoiMarkers = props => {
           key={poi.key}
           position={poi.location}
           onClick={handleClick}
+	  title='Trash'
         >
-          <Pin
-            background={"#FBBC04"}
-            glyphColor={"#000"}
-            borderColor={"#000"}
-          />
+	<img src="/images/trash-can-svgrepo-com.svg" width={32} height={32}/>
         </AdvancedMarker>
       ))}
     </>
