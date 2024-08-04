@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {APIProvider,Map,useMap, AdvancedMarker,Pin} from "@vis.gl/react-google-maps";
 import MarkerModal from './components/marker_modal/marker_modal.js';
+import axios from 'axios';
 
 const PoiMarkers = props => {
   const map = useMap()
@@ -68,12 +69,22 @@ function LoadMap() {
   const [locations, setLocations] = useState([])
 
   const onMapClick = (ev) => {
+    const lat = ev.detail.latLng.lat;
+    const lng = ev.detail.latLng.lng;
     setLocations([...locations, 
       { 
       key: ev.detail.latLng.lat.toString(),
       location: ev.detail.latLng
     }])
-  }
+    // Send data to backend
+    axios.post('http://localhost:8081/save-location', { lat, lng })
+      .then(response => {
+        console.log('Location saved:', response.data);
+      })
+      .catch(error => {
+        console.error('Error saving location:', error);
+      });
+  };
   
   return (
     <div style={{height:"90vh"}}>
