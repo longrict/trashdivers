@@ -1,5 +1,4 @@
 import './landing.css';
-import {Header} from './header.js'
 
 function Landing(props) {
 
@@ -34,8 +33,6 @@ function Landing(props) {
     return (
         <div className="landing-body">
             <div id="first">
-                <Header></Header>
-                
                 <div className="image-container">
                     <div>
                         <div className="text">
