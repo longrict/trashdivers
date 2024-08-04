@@ -5,6 +5,7 @@ import { Header } from './header.js';
 import { Login } from './login.js';
 // import Map from './map'
 import { LoadMap } from './LoadMap.js';
+import { Heated } from './heated.js';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path='/' element ={<Landing/>}/>
         <Route path='/map' element ={<LoadMap/>}/>
         <Route path="/login" element={<Login/>}/>
+        <Route path="/heated" element={<Heated/>}/>
       </Routes>
 
     </div>
