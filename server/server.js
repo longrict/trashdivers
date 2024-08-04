@@ -1,32 +1,55 @@
-const express = require("express");
+const express = require('express');
+const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const cors = require('cors');
+require('dotenv').config(); 
 
+
+const port = 8081;
 const app = express();
+
 app.use(cors());
+app.use(bodyParser.json());
 
 const db = mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME
-})
+});
 
-app.post('/signup', (req,res) =>){
-    const sql ="INSERT INTO login ('username','password') VALUES (?)";
-    const values = [
-        req.body.username,
-        req.body.password
-    ]
-    db.query(sql, [values], (err,data) =>{
-        if(err){
-            return res.json("error");
+db.connect(err => {
+    if (err) {
+        console.error('Error connecting to the database:', err);
+        return;
+    }
+    console.log('Connected to the MySQL database.');
+});
+
+app.post('/login', (req,res) =>{
+    const { username, password } = req.body;
+    console.log('Request body:', req.body);
+
+    const query ="SELECT * FROM login WHERE username = ? AND password = ?";
+
+    db.query(query, [username, password], (err, results) =>{
+        if (err) {
+            console.error('Error querying the database:', err);
+            res.status(500).send('Server error');
+            return;
         }
-        return res.json(data);
+        if (results.length > 0){
+            console.log("Success");
+            return res.json("Success")
+        } else {
+            console.log("Failed");
+            return res.json("Invalid credentials")
+
+        }
     })
 
-}
+});
 
-app.listen(8081, () => {
-    console.log("listening");
-})
+app.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}`);
+});
