@@ -1,0 +1,109 @@
+.landing-body {
+    width: 100vw;
+    background-color:white;
+    display:flex;
+    flex-direction: column;
+}
+p,h1 {
+    white-space: pre-line;
+    color:white;
+}
+.landing-content {
+    width:100vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: #6BBF59;
+    gap:20px;
+}
+
+#first {
+    height:100vh;
+    width:100vw;
+    display:flex;
+    flex-direction: column;
+}
+.image-container {
+    height:100%;
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content: center;
+    background-color: #009144;
+    padding:0;
+    position:relative;
+}
+
+.image-container video {
+    position: absolute;
+    object-fit:cover;
+    height:100%;
+    width:100%;
+}
+.image-container .text,
+.image-container #join-button
+{
+    position: relative;
+    z-index: 1; 
+}
+
+.image-container > img {
+    max-width: 60%;
+    height:auto;
+}
+
+.landing-content .desc {
+    background-color: #6BBF59;
+    text-align:center;
+    max-width: 30vw;
+}
+.landing-content .desc h1,
+.landing-content .desc p
+{   
+    color:white;
+
+}
+
+.add-shadow {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Adds a shadow to make the text stand out */
+}
+
+#join-button {
+    padding:10px;
+    font-size:20px;
+    background-color: #009144de;
+    color:white;
+    border-color:white;
+}
+
+.bg {
+    background-color: rgba(0, 0, 0,1);
+    padding:10px;
+}
+
+.landing-content img {
+    width:40%;
+}
+
+.missions {
+    width:100%;
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+    gap:20px;
+}
+.mission {
+    width:30%;
+}
+
+.mission p {
+    color:black;
+}
+
+.seperator {
+    height:10px;
+    width:100vw;
+    background-color:#08A045;
+}
