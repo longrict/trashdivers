@@ -3,9 +3,17 @@
     align-items: center;
     justify-content: space-between;
 
-    background-color: #0B6E4F;
-    color: #FCFBF4;
+    background-color: #FCFBF4;
+    color: black;
     padding: 0px 32px;
+    border-style:ridge;
+    border-width: 0px 0px 1px 0px;
+    border-color: rgba(0, 0, 0, 0.414);
+    height:85px;
+}
+
+.bannerName {
+    color:black;
 }
 
 .links {
