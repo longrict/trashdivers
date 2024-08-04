@@ -14,8 +14,15 @@
  * limitations under the License.
  */
 
-import React, { useEffect, useState, useRef, useCallback } from "react"
+import React, {useState, useCallback } from "react"
 import { createRoot } from "react-dom/client"
+
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogCont5ent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 import {
   APIProvider,
@@ -25,12 +32,13 @@ import {
   Pin
 } from "@vis.gl/react-google-maps"
 
-import { MarkerClusterer } from "@googlemaps/markerclusterer"
-
 const App = () => {
   const [locations, setLocations] = useState([])
 
+  const [open, setOpen] = useState(false);
+
   const onMapClick = (ev) => {
+    setOpen(true)
     setLocations([...locations, 
       { 
       key: ev.detail.latLng.lat.toString(),
@@ -44,8 +52,8 @@ const App = () => {
       onLoad={() => console.log("Maps API has loaded.")}
     >
       <Map
-        defaultZoom={13}
-        defaultCenter={{ lat: -33.860664, lng: 151.208138 }}
+        defaultZoom={18}
+        defaultCenter={{ lat: 43.657268619462435, lng: -79.37750246645835}}
         onCameraChanged= {ev =>
           console.log(
             "camera changed:",
@@ -54,12 +62,13 @@ const App = () => {
             ev.detail.zoom
           )
         }
-        mapId="da37f3254c6a6d1c"
+        mapId="46d394a00ac7ec91"
         onClick={onMapClick}
       >
         <PoiMarkers pois={locations} />
       </Map>
     </APIProvider>
+    
   )
 }
 
