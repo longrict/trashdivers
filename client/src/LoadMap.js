@@ -9,6 +9,7 @@ const PoiMarkers = props => {
 
   const [isMarkerModalOpen, setMarkerModalOpen] = useState(false);
   const [markerFormData, setMarkerFormData] = useState(null);
+  const [position, changePosition] = useState();
 
   const handleOpenMarkerModal = () => {
     setMarkerModalOpen(true);
@@ -20,21 +21,31 @@ const PoiMarkers = props => {
 
   const handleFormSubmit = (data) => {
     setMarkerFormData(data);
-    console.log(markerFormData);
+    //console.log(markerFormData);
+    const lat = position.lat();
+    const lng = position.lng();
+    // Send data to backend
+    axios.post('http://localhost:8081/save-location', { lat, lng })
+      .then(response => {
+        console.log('Location saved:', response.data);
+      })
+      .catch(error => {
+        console.error('Error saving location:', error);
+      });
     handleCloseMarkerModal();
   };
     
   const handleClick = useCallback(ev => {
     if (!map) return
     if (!ev.latLng) return
-
+    changePosition(ev.latLng);
     //console.log('marker clicked: ', ev.latLng.toString());
     handleOpenMarkerModal()
     map.panTo(ev.latLng)
   })
 
-  console.log(props)
-  console.log(props.pois)
+  //console.log(props)
+  //console.log(props.pois)
 
   return (
     <>
@@ -69,21 +80,14 @@ function LoadMap() {
   const [locations, setLocations] = useState([])
 
   const onMapClick = (ev) => {
-    const lat = ev.detail.latLng.lat;
-    const lng = ev.detail.latLng.lng;
+    // const lat = ev.detail.latLng.lat;
+    // const lng = ev.detail.latLng.lng;
     setLocations([...locations, 
       { 
       key: ev.detail.latLng.lat.toString(),
       location: ev.detail.latLng
     }])
-    // Send data to backend
-    axios.post('http://localhost:8081/save-location', { lat, lng })
-      .then(response => {
-        console.log('Location saved:', response.data);
-      })
-      .catch(error => {
-        console.error('Error saving location:', error);
-      });
+
   };
   
   return (
